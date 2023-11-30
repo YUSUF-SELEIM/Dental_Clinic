@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="../js/darkmode.js" defer></script>
-    <script src="../js/script.js" defer></script>
+    <script src="../js/authentication_animator.js" defer></script>
     <script src="../js/form-validations/sign-in-validation.js" defer></script>
     <script src="../js/form-validations/log-in-validation.js" defer></script>
     <script src="../js/form-validations/log-in-admin-validation.js" defer></script>
