@@ -71,24 +71,77 @@ if (isset($_POST['log-out'])) {
                         </svg>
                     </button>
                 </li>
-                <!-- <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                </li>
-                <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
-                </li> -->
             </ul>
-            <div class="py-2">
+            <div class="py-2 flex justify-center">
                 <?php
                 if (isset($_SESSION['user_email'])) {
                     echo '        <form method="post">
-                        <button type="submit" name="log-out" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Log Out</button>
+                        <button type="submit" name="log-out" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"><i class="fa-solid fa-arrow-right-from-bracket"></i>  Log Out</button>
                     </form>';
                 }
                 ?>
             </div>
         </div>
     </header>
+
+    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400" id="tabs-example" role="tablist">
+            <li class="me-2" role="presentation">
+                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="profile-tab-example" type="button" role="tab" aria-controls="profile-example" aria-selected="false">
+                    Booking
+                </button>
+            </li>
+            <li class="me-2" role="presentation">
+                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="dashboard-tab-example" type="button" role="tab" aria-controls="dashboard-example" aria-selected="false">
+                    Dashboard
+                </button>
+            </li>
+            <li class="me-2" role="presentation">
+                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="settings-tab-example" type="button" role="tab" aria-controls="settings-example" aria-selected="false">
+                    Settings
+                </button>
+            </li>
+            <li role="presentation">
+                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="contacts-tab-example" type="button" role="tab" aria-controls="contacts-example" aria-selected="false">
+                    Contacts
+                </button>
+            </li>
+        </ul>
+    </div>
+    <div id="tabContentExample" class="p-2">
+        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="profile-example" role="tabpanel" aria-labelledby="profile-tab-example">
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+                This is some placeholder content the
+                <strong class="font-medium text-gray-800 dark:text-white">Profile tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for
+                the next. The tab JavaScript swaps classes to control the content
+                visibility and styling.
+            </p>
+        </div>
+        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="dashboard-example" role="tabpanel" aria-labelledby="dashboard-tab-example">
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+                This is some placeholder content the
+                <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for
+                the next. The tab JavaScript swaps classes to control the content
+                visibility and styling.
+            </p>
+        </div>
+        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="settings-example" role="tabpanel" aria-labelledby="settings-tab-example">
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+                This is some placeholder content the
+                <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for
+                the next. The tab JavaScript swaps classes to control the content
+                visibility and styling.
+            </p>
+        </div>
+        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="contacts-example" role="tabpanel" aria-labelledby="contacts-tab-example">
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+                This is some placeholder content the
+                <strong class="font-medium text-gray-800 dark:text-white">Contacts tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for
+                the next. The tab JavaScript swaps classes to control the content
+                visibility and styling.
+            </p>
+        </div>
+    </div>
     <script src="../../dist/bundle.js"></script>
 </body>
 
