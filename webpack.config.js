@@ -1,9 +1,10 @@
 const path = require("path");
+const glob = require('glob');
 
 module.exports = {
 	mode: "development",
 	entry: {
-		'bundle' :'./src/js/flowbite.js'
+		'bundle' : glob.sync('./src/js/modules/*.js')
 	},
 	output: {
 		filename: "[name].js",
