@@ -1,5 +1,6 @@
 <?php include '../config/db.php';  ?>
 <?php
+session_start();
 $email = $password = $confirm_password = '';
 $error_messenger = '';
 
@@ -38,6 +39,7 @@ if (isset($_POST['submit'])) {
         } else {
             $sql = "INSERT INTO Users (email ,password) VALUES ('$email','$password')";
             if (mysqli_query($conn, $sql)) {
+                $_SESSION['user_email'] = $email;
                 // Redirect to a new page after successful form submission
                 header("Location: user_page.php");
                 exit(); // Make sure to exit to prevent further execution
@@ -67,6 +69,7 @@ if (isset($_POST['submit'])) {
         $result = $conn->query($loginQuery);
 
         if ($result && $result->num_rows > 0) {
+            $_SESSION['user_email'] = $email;
             header("Location: user_page.php");
             exit();
         } else {
@@ -109,7 +112,7 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/eb2112263c.js" crossorigin="anonymous"></script>
     <script src="../js/darkmode.js" defer></script>
     <script src="../js/authentication_animator.js" defer></script>
     <script src="../js/form-validations/sign-in-validation.js" defer></script>
