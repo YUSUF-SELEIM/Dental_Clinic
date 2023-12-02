@@ -5,9 +5,9 @@ import { Tabs } from 'flowbite';
     // create an array of objects with the id, trigger element (eg. button), and the content element
     const tabElements = [
         {
-            id: 'profile',
-            triggerEl: document.querySelector('#profile-tab-example'),
-            targetEl: document.querySelector('#profile-example'),
+            id: 'booking-tab',
+            triggerEl: document.querySelector('#booking-tab'),
+            targetEl: document.querySelector('#booking-content'),
         },
         {
             id: 'dashboard',
@@ -50,5 +50,5 @@ import { Tabs } from 'flowbite';
     * instanceOptions: optional
     */
     const tabs = new Tabs(tabsElement, tabElements, options, instanceOptions);
-    tabs.show('dashboard');
+    tabs.show('booking-tab');
     
