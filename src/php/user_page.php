@@ -23,6 +23,8 @@ if (isset($_POST['log-out'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/main.css">
     <script src="https://kit.fontawesome.com/eb2112263c.js" crossorigin="anonymous"></script>
+    <script src="../js/form-validations/booking-form-validation.js" defer></script>
+    <script src="../js/day-time-coordinator.js" defer></script>
     <script src="../js/darkmode.js" defer></script>
     <script>
         if (
@@ -87,7 +89,7 @@ if (isset($_POST['log-out'])) {
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400" id="tabs-example" role="tablist">
             <li class="me-2" role="presentation">
-                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="profile-tab-example" type="button" role="tab" aria-controls="profile-example" aria-selected="false">
+                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="booking-tab" type="button" role="tab" aria-controls="booking-content" aria-selected="false">
                     Booking
                 </button>
             </li>
@@ -109,13 +111,46 @@ if (isset($_POST['log-out'])) {
         </ul>
     </div>
     <div id="tabContentExample" class="p-2">
-        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="profile-example" role="tabpanel" aria-labelledby="profile-tab-example">
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-                This is some placeholder content the
-                <strong class="font-medium text-gray-800 dark:text-white">Profile tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for
-                the next. The tab JavaScript swaps classes to control the content
-                visibility and styling.
-            </p>
+        <div class="hidden rounded-lg  flex justify-center" id="booking-content" role="tabpanel" aria-labelledby="booking-tab">
+            <div class="w-full  bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                <div class="p-6 space-y-3 md:space-y-6 sm:p-8">
+                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                        Book an Appointment
+                    </h1>
+                    <form id="form" class="space-y-4 md:space-y-6" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+                        <input type="hidden" name="sign-in-form" value="1">
+
+                        <div class="flex space-x-2">
+                            <div>
+                                <label for="first-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name<span id="first-name-validation" class="text-lg text-red-600"> *</span></label>
+                                <input type="text" name="first-name" id="first-name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white " placeholder="Yusuf" required>
+                            </div>
+                            <div>
+                                <label for="last-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name<span id="last-name-validation" class="text-lg text-red-600"> *</span></label>
+                                <input type="text" name="last-name" id="last-name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg   block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white " placeholder="Abdelfattah" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="symptoms" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Describe Your Symptoms<span id="symptoms-name-validation" class="text-lg text-red-600"> *</span></label>
+                            <textarea id="symptoms" rows="5" class="resize-none  block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your symptoms here..." required></textarea>
+                        </div>
+                        <div class="flex space-x-5 justify-center">
+                            <?php include('./days-and-times/sunday.php'); ?>
+                            <?php include('./days-and-times/tuesday.php'); ?>
+                            <?php include('./days-and-times/thursday.php'); ?>
+
+
+                        </div>
+                        <!-- <div class="flex flex-col justify-center">
+                            <?php include('./session_time.php'); ?>
+                        </div> -->
+                        <button name="submit" class="w-full text-gray bg-gray-200 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Book Now</button>
+                        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                            <span id="login-here" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Already Booked?</span>
+                        </p>
+                    </form>
+                </div>
+            </div>
         </div>
         <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="dashboard-example" role="tabpanel" aria-labelledby="dashboard-tab-example">
             <p class="text-sm text-gray-500 dark:text-gray-400">
