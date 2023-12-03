@@ -1,3 +1,5 @@
+<?php include '../config/db.php';  ?>
+
 <?php
 session_start(); // Start the session
 
@@ -12,6 +14,58 @@ if (isset($_POST['log-out'])) {
     session_destroy();
     header("Location: authentication.php");
     exit();
+}
+$first_name = $last_name = $symptoms = $booking_day = $booking_time = $user_id = '';
+$user_email = $_SESSION['user_email'];
+
+if (isset($_POST['submit'])) {
+    if (!empty($_POST['first-name'])) {
+        $first_name = filter_input(
+            INPUT_POST,
+            'first-name',
+            FILTER_SANITIZE_FULL_SPECIAL_CHARS
+        );
+    }
+    if (!empty($_POST['last-name'])) {
+        $last_name = filter_input(
+            INPUT_POST,
+            'last-name',
+            FILTER_SANITIZE_FULL_SPECIAL_CHARS
+        );
+    }
+    if (!empty($_POST['symptoms'])) {
+        $symptoms = filter_input(
+            INPUT_POST,
+            'symptoms',
+            FILTER_SANITIZE_FULL_SPECIAL_CHARS
+        );
+    }
+    if (!empty($_SESSION['booking_day'])) {
+        $booking_day = $_SESSION['booking_day'];
+            
+    }
+    if (!empty($_SESSION['booking_time'])) {
+        $booking_time = $_SESSION['booking_time'];
+    }
+    // Retrieve the user_id from the Users table based on the username
+    $user_query = "SELECT id FROM Users WHERE email = '$user_email'";
+    $user_result = $conn->query($user_query);
+
+    if ($user_result->num_rows > 0) {
+        $user_row = $user_result->fetch_assoc();
+        $user_id = $user_row['id'];
+    } else {
+        echo "User not found.";
+    }
+    $sql = "INSERT INTO BookingInfo (first_name ,last_name , symptoms , booking_day , booking_time ,user_id)
+     VALUES ('$first_name','$last_name' , '$symptoms','$booking_day','$booking_time','$user_id')";
+
+    if (mysqli_query($conn, $sql)) {
+        echo "Sent";
+        exit(); // Make sure to exit to prevent further execution
+    } else {
+        echo "Error" . mysqli_error($conn);
+    }
 }
 ?>
 
@@ -132,7 +186,7 @@ if (isset($_POST['log-out'])) {
                         </div>
                         <div>
                             <label for="symptoms" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Describe Your Symptoms<span id="symptoms-name-validation" class="text-lg text-red-600"> *</span></label>
-                            <textarea id="symptoms" rows="5" class="resize-none  block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your symptoms here..." required></textarea>
+                            <textarea name="symptoms" id="symptoms" rows="5" class="resize-none  block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your symptoms here..." required></textarea>
                         </div>
                         <div class="flex space-x-5 justify-center">
                             <?php include('./days-and-times/sunday.php'); ?>

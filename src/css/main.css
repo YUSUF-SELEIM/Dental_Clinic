@@ -1969,7 +1969,7 @@ input:checked + .toggle-bg {
 }
 
 @media (min-width: 480px) {
-  .sm\:flex {
+.sm\:flex {
     display: flex;
   }
 
