@@ -97,6 +97,7 @@ if (isset($_POST['submit'])) {
         $result = $conn->query($loginQuery);
 
         if ($result && $result->num_rows > 0) {
+            $_SESSION['admin_email'] = $email;
             header("Location: admin_page.php");
             exit();
         } else {
