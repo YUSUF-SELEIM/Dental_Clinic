@@ -22,7 +22,7 @@ $reservedTimes['tuesday'] = [];
 $reservedTimes['thursday'] = [];
 
 // Check if there are rows in the result
-if ($result->num_rows > 0) {
+if (!empty($result) && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $day = $row['booking_day'];
         $time = $row['booking_time'];
@@ -36,9 +36,6 @@ if ($result->num_rows > 0) {
             $reservedTimes['thursday'][] = $time;
         }
     }
-} else {
-    // No rows found in the result
-    echo "No data found in the database.";
 }
 
 // Close the database connection
