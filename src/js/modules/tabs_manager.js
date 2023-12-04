@@ -1,6 +1,6 @@
 import { Tabs } from 'flowbite';
     
-    const tabsElement = document.getElementById('tabs-example');
+    const tabsElement = document.getElementById('tabs');
     
     // create an array of objects with the id, trigger element (eg. button), and the content element
     const tabElements = [
@@ -10,19 +10,9 @@ import { Tabs } from 'flowbite';
             targetEl: document.querySelector('#booking-content'),
         },
         {
-            id: 'dashboard',
-            triggerEl: document.querySelector('#dashboard-tab-example'),
-            targetEl: document.querySelector('#dashboard-example'),
-        },
-        {
-            id: 'settings',
-            triggerEl: document.querySelector('#settings-tab-example'),
-            targetEl: document.querySelector('#settings-example'),
-        },
-        {
-            id: 'contacts',
-            triggerEl: document.querySelector('#contacts-tab-example'),
-            targetEl: document.querySelector('#contacts-example'),
+            id: 'history-tab',
+            triggerEl: document.querySelector('#history-tab'),
+            targetEl: document.querySelector('#history-content'),
         },
     ];
     
@@ -40,7 +30,7 @@ import { Tabs } from 'flowbite';
     
     // instance options with default values
     const instanceOptions = {
-      id: 'tabs-example',
+      id: 'tabs',
       override: true
     };
     
