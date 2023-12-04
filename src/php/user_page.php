@@ -7,16 +7,23 @@ if (!isset($_SESSION['user_email'])) {
     $guestOrUser = "Book Now";
 } else {
     $guestOrUser = $_SESSION['user_email'];
+        // Retrieve the user_id from the Users table based on the email
+        $user_query = "SELECT id FROM Users WHERE email = '$guestOrUser'";
+        $user_result = $conn->query($user_query);
+    
+        if ($user_result->num_rows > 0) {
+            $user_row = $user_result->fetch_assoc();
+            $user_id = $user_row['id'];
+            $_SESSION['user_id'] = $user_id ;
+        } else {
+            echo "User not found.";
+        }
 }
 
-if (isset($_POST['log-out'])) {
-    $_SESSION = array();
-    session_destroy();
-    header("Location: authentication.php");
-    exit();
-}
 $first_name = $last_name = $symptoms = $booking_day = $booking_time = $user_id = '';
-$user_email = $_SESSION['user_email'];
+if(isset($_SESSION['user_email'])){
+    $user_email = $_SESSION['user_email'];
+}
 
 if (isset($_POST['submit'])) {
     if (!empty($_POST['first-name'])) {
@@ -42,30 +49,35 @@ if (isset($_POST['submit'])) {
     }
     if (!empty($_SESSION['booking_day'])) {
         $booking_day = $_SESSION['booking_day'];
-            
     }
     if (!empty($_SESSION['booking_time'])) {
         $booking_time = $_SESSION['booking_time'];
     }
-    // Retrieve the user_id from the Users table based on the username
-    $user_query = "SELECT id FROM Users WHERE email = '$user_email'";
-    $user_result = $conn->query($user_query);
+    $user_id = $_SESSION['user_id'];
 
-    if ($user_result->num_rows > 0) {
-        $user_row = $user_result->fetch_assoc();
-        $user_id = $user_row['id'];
-    } else {
-        echo "User not found.";
-    }
     $sql = "INSERT INTO BookingInfo (first_name ,last_name , symptoms , booking_day , booking_time ,user_id)
      VALUES ('$first_name','$last_name' , '$symptoms','$booking_day','$booking_time','$user_id')";
 
     if (mysqli_query($conn, $sql)) {
-        echo "Sent";
-        exit(); // Make sure to exit to prevent further execution
+        // Update the Users table to set bookedOrNot to TRUE for the specified user
+        $update_user_bookedOrNot_query = "UPDATE Users SET hasBookedOrNot = 1 WHERE id = '$user_id'";
+        if (mysqli_query($conn, $update_user_bookedOrNot_query)) {
+            $_SESSION['user_id'] = $user_id ;
+            echo "Sent";
+            exit(); // Make sure to exit to prevent further execution
+        } else {
+            echo "Error updating user status: " . mysqli_error($conn);
+        }
     } else {
         echo "Error" . mysqli_error($conn);
     }
+}
+
+if (isset($_POST['log-out'])) {
+    $_SESSION = array();
+    session_destroy();
+    header("Location: authentication.php");
+    exit();
 }
 ?>
 
@@ -79,6 +91,7 @@ if (isset($_POST['submit'])) {
     <script src="https://kit.fontawesome.com/eb2112263c.js" crossorigin="anonymous"></script>
     <script src="../js/form-validations/booking-form-validation.js" defer></script>
     <script src="../js/day-time-coordinator.js" defer></script>
+    <script src="../js/bookedOrNot_fetcher.js" defer></script>
     <script src="../js/darkmode.js" defer></script>
     <script>
         if (
@@ -93,7 +106,6 @@ if (isset($_POST['submit'])) {
     </script>
     <title>Dashboard</title>
 </head>
-
 <body class="flex flex-col bg-gray-50 dark:bg-gray-900">
     <header class="flex justify-between items-center p-2 h-full">
         <div class="flex items-center p-2 text-2xl font-semibold text-gray-900 dark:text-white">
@@ -139,41 +151,28 @@ if (isset($_POST['submit'])) {
             </div>
         </div>
     </header>
-
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400" id="tabs-example" role="tablist">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400" id="tabs" role="tablist">
             <li class="me-2" role="presentation">
                 <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="booking-tab" type="button" role="tab" aria-controls="booking-content" aria-selected="false">
                     Booking
                 </button>
             </li>
             <li class="me-2" role="presentation">
-                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="dashboard-tab-example" type="button" role="tab" aria-controls="dashboard-example" aria-selected="false">
-                    Dashboard
-                </button>
-            </li>
-            <li class="me-2" role="presentation">
-                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="settings-tab-example" type="button" role="tab" aria-controls="settings-example" aria-selected="false">
-                    Settings
-                </button>
-            </li>
-            <li role="presentation">
-                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="contacts-tab-example" type="button" role="tab" aria-controls="contacts-example" aria-selected="false">
-                    Contacts
+                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="history-tab" type="button" role="tab" aria-controls="history-content" aria-selected="false">
+                    History
                 </button>
             </li>
         </ul>
     </div>
     <div id="tabContentExample" class="p-2">
         <div class="hidden rounded-lg  flex justify-center" id="booking-content" role="tabpanel" aria-labelledby="booking-tab">
-            <div class="w-full  bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div id="booking-form" class="hidden w-full  bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div class="p-6 space-y-3 md:space-y-6 sm:p-8">
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                         Book an Appointment
                     </h1>
                     <form id="form" class="space-y-4 md:space-y-6" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-                        <input type="hidden" name="sign-in-form" value="1">
-
                         <div class="flex space-x-2">
                             <div>
                                 <label for="first-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name<span id="first-name-validation" class="text-lg text-red-600"> *</span></label>
@@ -192,40 +191,21 @@ if (isset($_POST['submit'])) {
                             <?php include('./days-and-times/sunday.php'); ?>
                             <?php include('./days-and-times/tuesday.php'); ?>
                             <?php include('./days-and-times/thursday.php'); ?>
-
-
                         </div>
-                        <!-- <div class="flex flex-col justify-center">
-                            <?php include('./session_time.php'); ?>
-                        </div> -->
                         <button name="submit" class="w-full text-gray bg-gray-200 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Book Now</button>
-                        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                            <span id="login-here" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Already Booked?</span>
-                        </p>
                     </form>
                 </div>
             </div>
+            <div id="booking-confirmation" class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800"  >
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    You have successfully booked an appointment. Your booking is awaiting admin approval.
+                </p>
+            </div>
         </div>
-        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="dashboard-example" role="tabpanel" aria-labelledby="dashboard-tab-example">
+        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="history-content" role="tabpanel" aria-labelledby="history-tab">
             <p class="text-sm text-gray-500 dark:text-gray-400">
                 This is some placeholder content the
                 <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for
-                the next. The tab JavaScript swaps classes to control the content
-                visibility and styling.
-            </p>
-        </div>
-        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="settings-example" role="tabpanel" aria-labelledby="settings-tab-example">
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-                This is some placeholder content the
-                <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for
-                the next. The tab JavaScript swaps classes to control the content
-                visibility and styling.
-            </p>
-        </div>
-        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="contacts-example" role="tabpanel" aria-labelledby="contacts-tab-example">
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-                This is some placeholder content the
-                <strong class="font-medium text-gray-800 dark:text-white">Contacts tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for
                 the next. The tab JavaScript swaps classes to control the content
                 visibility and styling.
             </p>
