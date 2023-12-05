@@ -980,23 +980,13 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "./src/js/modules/flowbite.js":
-/*!************************************!*\
-  !*** ./src/js/modules/flowbite.js ***!
-  \************************************/
+/***/ "./src/js/modules/user_tabs_manager.js":
+/*!*********************************************!*\
+  !*** ./src/js/modules/user_tabs_manager.js ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var flowbite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flowbite */ \"./node_modules/flowbite/lib/esm/index.js\");\n\n\n\n//# sourceURL=webpack:///./src/js/modules/flowbite.js?");
-
-/***/ }),
-
-/***/ "./src/js/modules/tabs_manager.js":
-/*!****************************************!*\
-  !*** ./src/js/modules/tabs_manager.js ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var flowbite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flowbite */ \"./node_modules/flowbite/lib/esm/index.js\");\n\n    \n    const tabsElement = document.getElementById('tabs');\n    \n    // create an array of objects with the id, trigger element (eg. button), and the content element\n    const tabElements = [\n        {\n            id: 'booking-tab',\n            triggerEl: document.querySelector('#booking-tab'),\n            targetEl: document.querySelector('#booking-content'),\n        },\n        {\n            id: 'history-tab',\n            triggerEl: document.querySelector('#history-tab'),\n            targetEl: document.querySelector('#history-content'),\n        },\n    ];\n    \n    // options with default values\n    const options = {\n        defaultTabId: 'settings',\n        activeClasses:\n            'text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-400 border-blue-600 dark:border-blue-500',\n        inactiveClasses:\n            'text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300',\n        onShow: () => {\n            console.log('tab is shown');\n        },\n    };\n    \n    // instance options with default values\n    const instanceOptions = {\n      id: 'tabs',\n      override: true\n    };\n    \n    /*\n    * tabElements: array of tab objects\n    * options: optional\n    * instanceOptions: optional\n    */\n    const tabs = new flowbite__WEBPACK_IMPORTED_MODULE_0__.Tabs(tabsElement, tabElements, options, instanceOptions);\n    tabs.show('booking-tab');\n    \n\n\n//# sourceURL=webpack:///./src/js/modules/tabs_manager.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var flowbite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flowbite */ \"./node_modules/flowbite/lib/esm/index.js\");\n/* eslint-disable no-unused-vars */\n\n\nconst tabsElementUser = document.getElementById('user-tabs');\n\n// create an array of objects with the id, trigger element (eg. button), and the content element\nconst tabElementsUser = [\n    {\n        id: 'booking-tab',\n        triggerEl: document.querySelector('#booking-tab'),\n        targetEl: document.querySelector('#booking-content'),\n    },\n    {\n\n        id: 'history-tab',\n        triggerEl: document.querySelector('#history-tab'),\n        targetEl: document.querySelector('#history-content'),\n\n    },\n];\n\n// options with default values\nconst optionsUser = {\n    defaultTabId: 'booking-tab',\n    activeClasses:\n        'text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-400 border-blue-600 dark:border-blue-500',\n    inactiveClasses:\n        'text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300',\n    onShow: () => {\n        console.log('tab is shownu');\n    },\n};\n\n// instance options with default values\nconst instanceOptionsUser = {\n    id: 'user-tabs',\n    override: true\n};\n\n/*\n* tabElements: array of tab objects\n* options: optional\n* instanceOptions: optional\n*/\nconst userTabs = new flowbite__WEBPACK_IMPORTED_MODULE_0__.Tabs(tabsElementUser, tabElementsUser, optionsUser, instanceOptionsUser);\n// userTabs.show('booking-tab');\n\n\n\n\n//# sourceURL=webpack:///./src/js/modules/user_tabs_manager.js?");
 
 /***/ })
 
@@ -1060,8 +1050,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var flow
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	__webpack_require__("./src/js/modules/flowbite.js");
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/js/modules/tabs_manager.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/js/modules/user_tabs_manager.js");
 /******/ 	
 /******/ })()
 ;

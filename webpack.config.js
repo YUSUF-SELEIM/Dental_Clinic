@@ -4,7 +4,9 @@ const glob = require('glob');
 module.exports = {
 	mode: "development",
 	entry: {
-		'bundle' : glob.sync('./src/js/modules/*.js')
+		'mainBundle' : glob.sync('./src/js/modules/*.js'),
+		'userTabsBundle': './src/js/modules/user_tabs_manager.js',
+		'adminTabsBundle': './src/js/modules/admin_tabs_manager.js'
 	},
 	output: {
 		filename: "[name].js",

@@ -92,7 +92,7 @@ if (isset($_POST['log-out'])) {
     <script src="https://kit.fontawesome.com/eb2112263c.js" crossorigin="anonymous"></script>
     <script src="../js/form-validations/booking-form-validation.js" defer></script>
     <script src="../js/day-time-coordinator.js" defer></script>
-    <script src="../js/bookedOrNot_fetcher.js" defer></script>
+    <script src="../js/booking_and_approval_fetcher.js" defer></script>
     <script src="../js/darkmode.js" defer></script>
     <script>
         if (
@@ -153,7 +153,7 @@ if (isset($_POST['log-out'])) {
         </div>
     </header>
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400" id="tabs" role="tablist">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400" id="user-tabs" role="tablist">
             <li class="me-2" role="presentation">
                 <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="booking-tab" type="button" role="tab" aria-controls="booking-content" aria-selected="false">
                     Booking
@@ -168,6 +168,7 @@ if (isset($_POST['log-out'])) {
     </div>
     <div id="tabContentExample" class="p-2">
         <div class="hidden rounded-lg  flex justify-center" id="booking-content" role="tabpanel" aria-labelledby="booking-tab">
+
             <div id="booking-form" class="hidden w-full  bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div class="p-6 space-y-3 md:space-y-6 sm:p-8">
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -205,6 +206,17 @@ if (isset($_POST['log-out'])) {
                     You have successfully booked an appointment. Your booking is awaiting admin approval.
                 </p>
             </div>
+            <div id="approval-confirmation" class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800"  >  
+            <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5">
+                <svg aria-hidden="true" class="w-8 h-8 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+            </div>  
+            <p class="text-sm text-center text-gray-500 dark:text-gray-400">
+                  Your reservation has been successfully approved <br>
+                  We look forward to your presence at the scheduled appointment. <br>
+                  Please ensure to attend on time
+
+                </p>
+            </div>
         </div>
         <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="history-content" role="tabpanel" aria-labelledby="history-tab">
             <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -215,7 +227,7 @@ if (isset($_POST['log-out'])) {
             </p>
         </div>
     </div>
-    <script src="../../dist/bundle.js"></script>
+    <script src="../../dist/userTabsBundle.js"></script>
 </body>
 
 </html>
