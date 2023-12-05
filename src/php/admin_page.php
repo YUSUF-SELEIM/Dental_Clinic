@@ -8,20 +8,28 @@ if (!isset($_SESSION['admin_email'])) {
     $guestOrUser = $_SESSION['admin_email'];
 }
 
-// Fetch unapproved reservations
-$sql = "SELECT id ,first_name, last_name, symptoms, booking_day, booking_time , user_id  FROM BookingInfo WHERE approvedOrNot = 0";
-$result = mysqli_query($conn, $sql);
+if (isset($_SESSION['admin_email'])) {
+    // Fetch unapproved reservations
+    $unapprovedUsers_query = "SELECT id ,first_name, last_name, symptoms, booking_day, booking_time , user_id  FROM BookingInfo WHERE approvedOrNot = 0";
+    $result_unapprovedUsers_query = mysqli_query($conn, $unapprovedUsers_query);
 
-if (!$result) {
-    echo "Error: " . mysqli_error($conn);
-}
+    if (!$result_unapprovedUsers_query) {
+        echo "Error: " . mysqli_error($conn);
+    }
 
+    $unattendedUsers_query = "SELECT id ,email, history  FROM Users WHERE hasAttendedOrNot = 0 AND hasBookedOrNot = 1";
+    $result_unattendedUsers_query = mysqli_query($conn, $unattendedUsers_query);
 
-if (isset($_POST['log-out'])) {
-    $_SESSION = array();
-    session_destroy();
-    header("Location: authentication.php");
-    exit();
+    if (!$result_unattendedUsers_query) {
+        echo "Error: " . mysqli_error($conn);
+    }
+
+    if (isset($_POST['log-out'])) {
+        $_SESSION = array();
+        session_destroy();
+        header("Location: authentication.php");
+        exit();
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -32,6 +40,8 @@ if (isset($_POST['log-out'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/main.css">
     <script src="https://kit.fontawesome.com/eb2112263c.js" crossorigin="anonymous"></script>
+    <script src="../js/approveReservation.js" defer></script>
+    <script src="../js/approveAttendance.js" defer></script>
     <script src="../js/darkmode.js" defer></script>
     <script>
         if (
@@ -93,25 +103,30 @@ if (isset($_POST['log-out'])) {
         </div>
     </header>
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400" id="tabs" role="tablist">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400" id="admin-tabs" role="tablist">
             <li class="me-2" role="presentation">
-                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="booking-tab" type="button" role="tab" aria-controls="booking-content" aria-selected="false">
+                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="approve-reservations-tab" type="button" role="tab" aria-controls="approve-reservations-content" aria-selected="false">
                     Approve Reservations
                 </button>
             </li>
             <li class="me-2" role="presentation">
-                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="history-tab" type="button" role="tab" aria-controls="history-content" aria-selected="false">
+                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="approve-attendance-tab" type="button" role="tab" aria-controls="approve-attendance-content" aria-selected="false">
+                    Approve Attendance
+                </button>
+            </li>
+            <li class="me-2" role="presentation">
+                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="admin-history-tab" type="button" role="tab" aria-controls="admin-history-content" aria-selected="false">
                     Add History
                 </button>
             </li>
         </ul>
     </div>
     <div id="tabContentExample" class="p-2">
-        <div class="hidden rounded-lg  flex justify-center" id="booking-content" role="tabpanel" aria-labelledby="booking-tab">
+        <div class="hidden rounded-lg  flex justify-center" id="approve-reservations-content" role="tabpanel" aria-labelledby="approve-reservations-tab">
 
             <?php
             // Check if there are unapproved reservations
-            if (mysqli_num_rows($result) > 0) {
+            if (mysqli_num_rows($result_unapprovedUsers_query) > 0) {
                 // Display a table with user information and an "Approve" button for each
                 echo "<div class='w-full relative overflow-x-auto shadow-md sm:rounded-lg'>
 
@@ -123,12 +138,12 @@ if (isset($_POST['log-out'])) {
                         <th class='py-2 px-4 border-b'>Booking Day</th>
                         <th class='py-2 px-4 border-b'>Booking Time</th>
                         <th class='py-2 px-4 border-b'>User ID</th>
-                        <th class='py-2 px-4 border-b'>Action</th>
+                        <th class='py-2 px-4 border-b'>Approve Reservation</th>
                     </tr>
                 </thead>
                 <tbody>";
 
-                while ($row = mysqli_fetch_assoc($result)) {
+                while ($row = mysqli_fetch_assoc($result_unapprovedUsers_query)) {
                     echo "<tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'>
 
                 <td class='py-2 px-4 border-b font-medium text-gray-900 whitespace-nowrap dark:text-white'>{$row['first_name']} {$row['last_name']}</td>
@@ -136,7 +151,7 @@ if (isset($_POST['log-out'])) {
                 <td class='py-2 px-4 border-b'>{$row['booking_day']}</td>
                 <td class='py-2 px-4 border-b'>{$row['booking_time']}</td>
                 <td class='py-2 px-4 border-b'>{$row['user_id']}</td>
-                <td class='py-2 px-4 border-b'>
+                <td class='py-2 px-4 border-b flex justify-center'>
                     <button class='bg-blue-500 text-white px-3 py-1 rounded' onclick='approveReservation({$row['id']})'>Approve</button>
                 </td>
             </tr>";
@@ -150,18 +165,56 @@ if (isset($_POST['log-out'])) {
             }
             ?>
 
-
         </div>
-        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="history-content" role="tabpanel" aria-labelledby="history-tab">
+        <div class="hidden rounded-lg  flex justify-center" id="approve-attendance-content" role="tabpanel" aria-labelledby="approve-attendance-tab">
+            <?php
+            // Check if there are unapproved reservations
+            if (mysqli_num_rows($result_unattendedUsers_query) > 0) {
+                // Display a table with user information and an "Approve" button for each
+                echo "<div class='w-full relative overflow-x-auto shadow-md sm:rounded-lg'>
+
+                    <table class='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+                    <thead class='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+                    <tr >
+                        <th class='py-2 px-4 border-b'>id</th>
+                        <th class='py-2 px-4 border-b'>Email</th>
+                        <th class='py-2 px-4 border-b'>History</th>
+                        <th class='py-2 px-4 border-b'>Approve Attendance</th>
+
+                    </tr>
+                </thead>
+                <tbody>";
+
+                while ($row = mysqli_fetch_assoc($result_unattendedUsers_query)) {
+                    echo "<tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'>
+
+                <td class='py-2 px-4 border-b'>{$row['id']}</td>
+                <td class='py-2 px-4 border-b'>{$row['email']}</td>
+                <td class='py-2 px-4 border-b'>{$row['history']}</td>
+                <td class='py-2 px-4 border-b flex justify-center'>
+                    <button class='bg-blue-500 text-white px-3 py-1 rounded' onclick='approveAttendance({$row['id']})'>Approve</button>
+                </td>
+            </tr>";
+                }
+
+                echo "</tbody>
+        </table>
+    </div>";
+            } else {
+                echo "<p class='text-gray-500'>No unapproved attendances.</p>";
+            }
+            ?>
+        </div>
+        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="admin-history-content" role="tabpanel" aria-labelledby="admin-history-tab">
             <p class="text-sm text-gray-500 dark:text-gray-400">
-                This is some placeholder content the
+                This is some history content the
                 <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for
                 the next. The tab JavaScript swaps classes to control the content
                 visibility and styling.
             </p>
         </div>
     </div>
-    <script src="../../dist/bundle.js"></script>
+    <script src="../../dist/adminTabsBundle.js"></script>
 </body>
 
 </html>
