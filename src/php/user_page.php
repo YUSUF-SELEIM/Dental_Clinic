@@ -1,27 +1,28 @@
-<?php include '../config/db.php';  ?>
-
 <?php
-session_start(); // Start the session
+include '../config/db.php';
+
+session_start();
 
 if (!isset($_SESSION['user_email'])) {
     $guestOrUser = "Book Now";
 } else {
     $guestOrUser = $_SESSION['user_email'];
-        // Retrieve the user_id from the Users table based on the email
-        $user_query = "SELECT id FROM Users WHERE email = '$guestOrUser'";
-        $user_result = $conn->query($user_query);
-    
-        if ($user_result->num_rows > 0) {
-            $user_row = $user_result->fetch_assoc();
-            $user_id = $user_row['id'];
-            $_SESSION['user_id'] = $user_id ;
-        } else {
-            echo "User not found.";
-        }
+
+    // Retrieve the user_id from the Users table based on the email
+    $user_query = "SELECT id FROM Users WHERE email = '$guestOrUser'";
+    $user_result = $conn->query($user_query);
+
+    if ($user_result->num_rows > 0) {
+        $user_row = $user_result->fetch_assoc();
+        $user_id = $user_row['id'];
+        $_SESSION['user_id'] = $user_id;
+    } else {
+        echo "User not found.";
+    }
 }
 
 $first_name = $last_name = $symptoms = $booking_day = $booking_time = $user_id = '';
-if(isset($_SESSION['user_email'])){
+if (isset($_SESSION['user_email'])) {
     $user_email = $_SESSION['user_email'];
 }
 
@@ -55,14 +56,22 @@ if (isset($_POST['submit'])) {
     }
     $user_id = $_SESSION['user_id'];
 
-    $sql = "INSERT INTO BookingInfo (first_name ,last_name , symptoms , booking_day , booking_time ,user_id)
+    // Reset hasAttendedOrNot to 0 when a new reservation is made
+    $reset_hasAttended_query = "UPDATE Users SET hasAttendedOrNot = 0 WHERE id = '$user_id'";
+    if (!mysqli_query($conn, $reset_hasAttended_query)) {
+        echo "Error resetting hasAttendedOrNot: " . mysqli_error($conn);
+        exit(); // Exit to prevent further execution
+    }
+
+    // Insert the new reservation
+    $sql = "INSERT INTO BookingInfo (first_name, last_name, symptoms, booking_day, booking_time, user_id)
      VALUES ('$first_name','$last_name' , '$symptoms','$booking_day','$booking_time','$user_id')";
 
     if (mysqli_query($conn, $sql)) {
         // Update the Users table to set bookedOrNot to TRUE for the specified user
         $update_user_bookedOrNot_query = "UPDATE Users SET hasBookedOrNot = 1 WHERE id = '$user_id'";
         if (mysqli_query($conn, $update_user_bookedOrNot_query)) {
-            $_SESSION['user_id'] = $user_id ;
+            $_SESSION['user_id'] = $user_id;
             echo "Sent";
             header("Location: user_page.php");
             exit(); // Make sure to exit to prevent further execution
@@ -82,6 +91,7 @@ if (isset($_POST['log-out'])) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,6 +103,7 @@ if (isset($_POST['log-out'])) {
     <script src="../js/form-validations/booking-form-validation.js" defer></script>
     <script src="../js/day-time-coordinator.js" defer></script>
     <script src="../js/booking_and_approval_fetcher.js" defer></script>
+    <script src="../js/showHistory.js" defer></script>
     <script src="../js/darkmode.js" defer></script>
     <script>
         if (
@@ -107,6 +118,7 @@ if (isset($_POST['log-out'])) {
     </script>
     <title>Dashboard</title>
 </head>
+
 <body class="flex flex-col bg-gray-50 dark:bg-gray-900">
     <header class="flex justify-between items-center p-2 h-full">
         <div class="flex items-center p-2 text-2xl font-semibold text-gray-900 dark:text-white">
@@ -160,7 +172,7 @@ if (isset($_POST['log-out'])) {
                 </button>
             </li>
             <li class="me-2" role="presentation">
-                <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="history-tab" type="button" role="tab" aria-controls="history-content" aria-selected="false">
+                <button onclick="showUserHistory(<?php echo $_SESSION['user_id']; ?>)" class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="history-tab" type="button" role="tab" aria-controls="history-content" aria-selected="false">
                     History
                 </button>
             </li>
@@ -187,7 +199,7 @@ if (isset($_POST['log-out'])) {
                         </div>
                         <div>
                             <label for="symptoms" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Describe Your Symptoms<span id="symptoms-name-validation" class="text-lg text-red-600"> *</span></label>
-                            <textarea name="symptoms" id="symptoms" rows="5" class="resize-none  block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your symptoms here..." required></textarea>
+                            <textarea name="symptoms" id="symptoms" rows="5" class="resize-none block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your symptoms here..." required></textarea>
                         </div>
                         <div class="flex space-x-5 justify-center">
                             <?php include('./days-and-times/sunday.php'); ?>
@@ -198,33 +210,33 @@ if (isset($_POST['log-out'])) {
                     </form>
                 </div>
             </div>
-            <div id="booking-confirmation" class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800"  >
-            <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5">
-                <svg aria-hidden="true" class="w-8 h-8 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            </div>   
-            <p class="text-sm text-gray-500 dark:text-gray-400">
+            <div id="booking-confirmation" class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5">
+                    <svg aria-hidden="true" class="w-8 h-8 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
                     You have successfully booked an appointment. Your booking is awaiting admin approval.
                 </p>
             </div>
-            <div id="approval-confirmation" class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800"  >  
-            <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5">
-                <svg aria-hidden="true" class="w-8 h-8 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            </div>  
-            <p class="text-sm text-center text-gray-500 dark:text-gray-400">
-                  Your reservation has been successfully approved <br>
-                  We look forward to your presence at the scheduled appointment. <br>
-                  Please ensure to attend on time
+            <div id="approval-confirmation" class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+                <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5">
+                    <svg aria-hidden="true" class="w-8 h-8 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <p class="text-sm text-center text-gray-500 dark:text-gray-400">
+                    Your reservation has been successfully approved <br>
+                    We look forward to your presence at the scheduled appointment. <br>
+                    Please ensure to attend on time
 
                 </p>
             </div>
         </div>
-        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="history-content" role="tabpanel" aria-labelledby="history-tab">
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-                This is some placeholder content the
-                <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for
-                the next. The tab JavaScript swaps classes to control the content
-                visibility and styling.
-            </p>
+        <div class="hidden rounded-lg " id="history-content" role="tabpanel" aria-labelledby="history-tab">
+            <ol class="list-decimal list-inside m-5">
+            </ol>
         </div>
     </div>
     <script src="../../dist/userTabsBundle.js"></script>
