@@ -109,6 +109,7 @@ if (isset($_POST['submit'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -137,8 +138,12 @@ if (isset($_POST['submit'])) {
 
     <header class="flex justify-between items-center p-2">
         <div class="flex items-center p-2 text-2xl font-semibold text-gray-900 dark:text-white">
-            <img class="h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
-            Flowbite
+        <a href="home_page.php" class="flex">
+        <img src="../assets/logo.png" class="h-8  hover:animate-spin" alt="" />
+            <div class="px-2">
+                Dental <span class="text-blue-600">Smile</span>
+            </div>
+        </a>
         </div>
         <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:animate-spin focus:outline-none rounded-lg text-sm p-2.5">
             <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
