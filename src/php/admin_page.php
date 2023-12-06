@@ -116,7 +116,7 @@ if (isset($_SESSION['admin_email'])) {
             </li>
             <li class="me-2" role="presentation">
                 <button class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="admin-history-tab" type="button" role="tab" aria-controls="admin-history-content" aria-selected="false">
-                    Add History
+                    Add Notes
                 </button>
             </li>
         </ul>
@@ -205,13 +205,30 @@ if (isset($_SESSION['admin_email'])) {
             }
             ?>
         </div>
-        <div class="hidden rounded-lg bg-gray-50 p-4 dark:bg-gray-800" id="admin-history-content" role="tabpanel" aria-labelledby="admin-history-tab">
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-                This is some history content the
-                <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for
-                the next. The tab JavaScript swaps classes to control the content
-                visibility and styling.
-            </p>
+        <div class="hidden rounded-lg" id="admin-history-content" role="tabpanel" aria-labelledby="admin-history-tab">
+            <!-- Inside your admin panel HTML -->
+            <section id="signin-form" class="w-full flex flex-col grow items-center justify-center px-6 py-6">
+        <div class="w-full  bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                    Add Notes
+                </h1>
+                <form class="space-y-4 md:space-y-6" action="add_notes_by_admin.php" method="POST">        
+                    <div>
+                        <label for="user_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User ID</label>
+                        <input type="text" name="user_id" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" required>
+                    </div>
+                    <div>
+                        <label for="history" id="password-label" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
+                        <textarea name="history" rows="4" cols="50" class="resize-none bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required></textarea>
+                    </div>
+                    <button type="submit" name="submit" class="w-full text-gray bg-gray-200 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Add Notes</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
         </div>
     </div>
     <script src="../../dist/adminTabsBundle.js"></script>
