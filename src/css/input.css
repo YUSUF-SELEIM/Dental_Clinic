@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.main-bg-style {
+    background-size: cover;  /* You can also use 'cover' based on your preference */
+    background-repeat: no-repeat;
+    background-position: center center; /* Center the background image */
+    height: 100%; /* Ensure the background takes the full height of the container */
+}

@@ -1,6 +1,14 @@
 var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
 var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
+
+themeToggleDarkIcon.addEventListener('click',() =>{
+    document.getElementById('main-bg').src = "../assets/main-bg-dark.jpg";
+})
+
+themeToggleLightIcon.addEventListener('click',() =>{
+    document.getElementById('main-bg').src = "../assets/main-bg.jpg";
+})
 // Change the icons inside the button based on previous settings
 if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     themeToggleLightIcon.classList.remove('hidden');
