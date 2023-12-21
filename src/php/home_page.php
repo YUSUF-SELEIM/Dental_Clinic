@@ -13,6 +13,7 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/logo.ico" type="image/x-icon"/>
     <script src="https://kit.fontawesome.com/eb2112263c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../css/main.css">
     <script src="../js/darkmode.js" defer></script>
@@ -77,9 +78,6 @@ if (isset($_POST['submit'])) {
                     </svg>
                 </button>
             </div>
-
-
-
         </div>
         <!-- Mobile Menu -->
         <div class="mobile-menu md:hidden">
@@ -140,7 +138,6 @@ if (isset($_POST['submit'])) {
                     </div>
                     <h3 class="mb-2 text-xl font-bold dark:text-white">Orthodontic</h3>
                     <p class="text-gray-500 dark:text-gray-400">Discreet and removable clear aligners for a more flexible and aesthetically pleasing orthodontic experience.
-
                     </p>
                 </div>
             </div>
@@ -186,7 +183,7 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
     <!--About us-->
-    <section id="about" class="pt-12 bg-blue-300 dark:bg-gray-900">
+    <section id="about" class="h-screen pt-12 bg-blue-300 dark:bg-gray-900">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
             <img class="h-full rounded-lg bg-contain hidden md:block" src="../assets/Healthnet-146-HDR-Pano-scaled.jpg" alt="office content 1">
             <div class="py-8 px-4 mx-auto max-w-screen-xl">
