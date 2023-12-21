@@ -92,7 +92,7 @@ if (isset($_POST['submit'])) {
     </nav>
 
     <!-- Home -->
-    <section id="home" class="h-[100vh] flex items-center justify-between bg-white dark:bg-gray-900 shadow-2xl">
+    <section id="home" class="h-[100vh] pt-6 flex items-center justify-between bg-white dark:bg-gray-900 shadow-2xl">
         <div class="flex-1 text-center px-4">
             <div class="text-7xl font-bold text-gray-800 dark:text-white mb-4 text-center">Welcome to <br><span class="text-blue-500">Dental Smile</span></div>
             <h3 class="text-lg text-gray-600 dark:text-gray-300 mb-8">Creating Healthy <br>Beautiful Smiles for Life</h3>
@@ -106,7 +106,7 @@ if (isset($_POST['submit'])) {
         </div>
     </section>
     <!-- service -->
-    <section id="services" class="pt-6 bg-white dark:bg-gray-900 md:h-screen">
+    <section id="services" class="pt-12 bg-white dark:bg-gray-900 md:h-screen">
         <div class=" py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6 dark:bg-gray-900">
             <div class=" max-w-screen-md mb-8 lg:mb-16">
                 <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">What we offer to take care of your teeth</h2>
@@ -183,7 +183,7 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
     <!--About us-->
-    <section id="about" class="h-screen pt-12 bg-blue-300 dark:bg-gray-900">
+    <section id="about" class="pt-16 h-full bg-blue-300 dark:bg-gray-900 md:h-screen">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
             <img class="h-full rounded-lg bg-contain hidden md:block" src="../assets/Healthnet-146-HDR-Pano-scaled.jpg" alt="office content 1">
             <div class="py-8 px-4 mx-auto max-w-screen-xl">
@@ -200,7 +200,7 @@ if (isset($_POST['submit'])) {
 
     </section>
     <!-----here is the footer -->
-    <footer id="contact" class="h-screen flex flex-col justify-between pt-24 p-4 py-6  bg-white dark:bg-gray-900 ">
+    <footer id="contact" class="h-screen flex flex-col justify-between pt-12 p-4 py-6  bg-white dark:bg-gray-900 ">
         <div class="flex flex-col justify-between items-center pt-32 px-5 md:flex-row">
             <div class="mb-6 md:mb-0">
                 <a href="#" class="flex items-center">
