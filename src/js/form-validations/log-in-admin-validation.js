@@ -22,12 +22,12 @@ emailFieldIII.addEventListener("input", () => {
 passwordFieldIII.addEventListener("input", () => {
 	if (passwordFieldIII.validity.patternMismatch || passwordFieldIII.value === "") {
 		passwordValidationIII.classList.add("text-red-600");
-		passwordValidationIII.classList.remove("text-green-600");
+		passwordValidationIII.classList.remove("text-green-500");
 		passwordFieldIII.setCustomValidity(
 			"Password Must be Minimum eight characters, at least one letter , one number and one special character "
 		);
 	} else {
-		passwordValidationIII.classList.add("text-green-600");
+		passwordValidationIII.classList.add("text-green-500");
 		passwordValidationIII.classList.remove("text-red-600");
 		passwordFieldIII.setCustomValidity("");
 	}
