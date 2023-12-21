@@ -177,7 +177,7 @@ if (isset($_POST['log-out'])) {
                 </button>
             </li>
             <li class="me-2" role="presentation">
-                <button onclick="showUserHistory(<?php echo $_SESSION['user_id']; ?>)" class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="history-tab" type="button" role="tab" aria-controls="history-content" aria-selected="false">
+                <button onclick="showUserHistory(<?php if(isset($_SESSION['user_id'])){echo $_SESSION['user_id'];} ?>)" class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="history-tab" type="button" role="tab" aria-controls="history-content" aria-selected="false">
                     History
                 </button>
             </li>
