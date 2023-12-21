@@ -31,13 +31,13 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
-    <nav class="bg-white w-full border-gray-200 dark:bg-gray-900 shadow-xl fixed">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <nav id="nav" class="bg-white w-full border-gray-200 dark:bg-gray-900 shadow-xl fixed">
+        <div class="w-full flex items-center justify-between p-4">
             <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="../assets/logo.png" class="h-8 hover:animate-spin" alt="" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"> Dental &nbsp<span class="text-blue-600">Smile</span></span>
             </a>
-            <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+            <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
@@ -59,32 +59,56 @@ if (isset($_POST['submit'])) {
                     </li>
                 </ul>
             </div>
-            <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:animate-spin focus:outline-none rounded-lg text-sm p-2.5">
-                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                </svg>
-                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
-                </svg>
-            </button>
+            <div>
+                <!-- Hamburger Icon -->
+                <button id="menu-btn" class="hamburger p-5 mt-6 md:hidden focus:outline-none">
+                    <span class="hamburger-top bg-black dark:bg-white"></span>
+                    <span class="hamburger-middle bg-black dark:bg-white"></span>
+                    <span class="hamburger-bottom bg-black dark:bg-white"></span>
+                </button>
+
+                <!-- Dark Mode Button (outside hamburger button) -->
+                <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:animate-spin focus:outline-none rounded-lg text-sm p-2.5">
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+
+
+
+        </div>
+        <!-- Mobile Menu -->
+        <div class="mobile-menu md:hidden">
+            <div id="menu" class="rounded-lg flex-col items-center hidden self-end py-8 mt-10 space-y-6 font-bold sm:w-auto sm:self-center left-6 right-6 drop-shadow-md">
+                <a href="#home" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Home</a>
+                <a href="#services" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
+                <a href="#about" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
+                <a href="#contact" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact Us</a>
+
+            </div>
         </div>
     </nav>
+
     <!-- Home -->
     <section id="home" class="h-[100vh] flex items-center justify-between bg-white dark:bg-gray-900 shadow-2xl">
         <div class="flex-1 text-center px-4">
             <div class="text-7xl font-bold text-gray-800 dark:text-white mb-4 text-center">Welcome to <br><span class="text-blue-500">Dental Smile</span></div>
             <h3 class="text-lg text-gray-600 dark:text-gray-300 mb-8">Creating Healthy <br>Beautiful Smiles for Life</h3>
             <form method="POST">
-                <button type="submit" name="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 ">Get Started Now</button>
+                <button id="getStartedButton" type="submit" name="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Get Started Now</button>
             </form>
         </div>
         <img></div>
-        <div class="main-bg-style flex-2 h-full w-[60%]  ">
+        <div class="main-bg-style flex-2 h-full w-[60%] hidden md:flex">
             <img id="main-bg" class="main-bg-style rounded-l-xl" src="../assets/main-bg-dark.jpg">
         </div>
     </section>
     <!-- service -->
-    <section id="services" class="pt-6 h-screen bg-white dark:bg-gray-900 ">
+    <section id="services" class="pt-6 bg-white dark:bg-gray-900 md:h-screen">
         <div class=" py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6 dark:bg-gray-900">
             <div class=" max-w-screen-md mb-8 lg:mb-16">
                 <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">What we offer to take care of your teeth</h2>
@@ -123,7 +147,7 @@ if (isset($_POST['submit'])) {
         </div>
     </section>
     <!--- 3 Cards-->
-    <div class="flex justify-center space-y-9 sm:flex-row sm:space-x-8 sm:space-y-0 dark:bg-gray-900">
+    <div class="hidden justify-center space-y-9 p-4 sm:flex-row sm:space-x-8 sm:space-y-0 dark:bg-gray-900 md:flex">
         <div class="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5 dark:bg-gray-900">
             <!--Card 1-->
             <div class="rounded overflow-hidden dark:text-white shadow-lg dark:bg-gray-900">
@@ -162,70 +186,85 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
     <!--About us-->
-    <section id="about" class="h-screen pt-12 bg-blue-300 dark:bg-gray-900 grid grid-cols-2 gap-4 items-center">
-        <img class="h-full rounded-lg bg-contain" src="../assets/Healthnet-146-HDR-Pano-scaled.jpg" alt="office content 1">
-        <div class="py-8 px-4 mx-auto max-w-screen-xl">
-            <div class="text-gray-700 sm:text-lg dark:text-gray-400">
-                <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Who we are ... ?</h2>
-                <p class="mb-4 font-black">Welcome to Dental Smile, where your oral health is our top priority. We are a dedicated team of dental professionals committed to providing high-quality dental care in a warm and welcoming environment.
-                    At our clinic, we understand the importance of a healthy and beautiful smile, and we strive to make every visit a positive experience.</p>
-                <br>
-                <p class="font-black">Our mission is to enhance the oral health and overall well-being of our patients by delivering personalized and comprehensive dental care. We aim to build long-lasting relationships with our patients based on trust, transparency, and exceptional service.</p>
+    <section id="about" class="pt-12 bg-blue-300 dark:bg-gray-900">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <img class="h-full rounded-lg bg-contain hidden md:block" src="../assets/Healthnet-146-HDR-Pano-scaled.jpg" alt="office content 1">
+            <div class="py-8 px-4 mx-auto max-w-screen-xl">
+                <div class="text-gray-700 sm:text-lg dark:text-gray-400">
+                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Who we are ... ?</h2>
+                    <p class="mb-4 font-black">Welcome to Dental Smile, where your oral health is our top priority. We are a dedicated team of dental professionals committed to providing high-quality dental care in a warm and welcoming environment.
+                        At our clinic, we understand the importance of a healthy and beautiful smile, and we strive to make every visit a positive experience.</p>
+                    <br>
+                    <p class="font-black">Our mission is to enhance the oral health and overall well-being of our patients by delivering personalized and comprehensive dental care. We aim to build long-lasting relationships with our patients based on trust, transparency, and exceptional service.</p>
+                </div>
             </div>
         </div>
     </section>
+
+    </section>
     <!-----here is the footer -->
-    <footer id="contact" class="h-screen bg-white dark:bg-gray-900 ">
-        <div class="h-full w-full pt-24 p-4 py-6 flex flex-col justify-between">
-            <div class="flex justify-between items-center px-5">
-                <div class="mb-6 md:mb-0">
-                    <a href="#" class="flex items-center">
-                        <img src="../assets/logo.png" class="h-8 me-3" alt="FlowBite Logo" />
-                        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Clinic Contact </span>
-                    </a>
+    <footer id="contact" class="h-screen flex flex-col justify-between pt-24 p-4 py-6  bg-white dark:bg-gray-900 ">
+        <div class="flex flex-col justify-between items-center pt-32 px-5 md:flex-row">
+            <div class="mb-6 md:mb-0">
+                <a href="#" class="flex items-center">
+                    <img src="../assets/logo.png" class="h-8 me-3" alt="FlowBite Logo" />
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Clinic Contact </span>
+                </a>
+            </div>
+            <div class="flex gap-3 grid-cols-1 sm:grid-cols-2">
+                <div>
+                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white"><img src="../assets/phone-call.png " class="h-5 w-5"></h2>
+                    <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                        <li class="mb-4">
+                            <a href="#" class="hover:underline"><img src="../assets/email.png" class="h-5 w-5"></a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:underline"><img src="../assets/location.png" class="h-5 w-5"></a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="flex gap-3 grid-cols-1 sm:grid-cols-2">
-                    <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white"><img src="../assets/phone-call.png " class="h-5 w-5"></h2>
-                        <ul class="text-gray-500 dark:text-gray-400 font-medium">
-                            <li class="mb-4">
-                                <a href="#" class="hover:underline"><img src="../assets/email.png" class="h-5 w-5"></a>
-                            </li>
-                            <li>
-                                <a href="#" class="hover:underline"><img src="../assets/location.png" class="h-5 w-5"></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">+0334544544</h2>
-                        <ul class="text-gray-500 dark:text-gray-400 font-medium">
-                            <li class="mb-4">
-                                <a href="https://github.com/themesberg/flowbite" class="hover:underline ">dentalsmile.info</a>
-                            </li>
-                            <li>
-                                <a href="https://discord.gg/4eeurUVvTy" class="hover:underline">Alex,Bee</a>
-                            </li>
-                        </ul>
-                    </div>
+                <div>
+                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">+0334544544</h2>
+                    <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                        <li class="mb-4">
+                            <a href="https://github.com/themesberg/flowbite" class="hover:underline ">dentalsmile.info</a>
+                        </li>
+                        <li>
+                            <a href="https://discord.gg/4eeurUVvTy" class="hover:underline">Alex,Bee</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="flex items-center justify-around">
-                <img src="../assets/logo.png" class="w-[5rem] animate-bounce" />
-                <img src="../assets/logo.png" class="w-[5rem] animate-bounce" />
-                <img src="../assets/logo.png" class="w-[5rem] animate-bounce" />
-                <img src="../assets/logo.png" class="w-[5rem] animate-bounce" />
-                <img src="../assets/logo.png" class="w-[5rem] animate-bounce" />
-            </div>
-            <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-            <div class="flex items-center justify-center">
-                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="https://flowbite.com/" class="hover:underline">Dental Smile</a>. All Rights Reserved.
-                </span>
-            </div>
+            <img src="../assets/logo.png" class="w-[5rem] md:hidden p-5" />
+        </div>
+
+        <div class="hidden items-center justify-around md:flex">
+            <img src="../assets/logo.png" class="w-[5rem] animate-bounce" />
+            <img src="../assets/logo.png" class="w-[5rem] animate-bounce" />
+            <img src="../assets/logo.png" class="w-[5rem] animate-bounce" />
+            <img src="../assets/logo.png" class="w-[5rem] animate-bounce" />
+            <img src="../assets/logo.png" class="w-[5rem] animate-bounce" />
+        </div>
+
+        <div class="flex items-center justify-center">
+            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="https://flowbite.com/" class="hover:underline">Dental Smile</a>. All Rights Reserved.
+            </span>
         </div>
     </footer>
+
     <a href="#home">
         <button class="fixed bottom-2 right-2 z-10 bg-blue-500 text-white px-4 py-3 rounded-full dark:bg-blue-700">
             <i class="fa-solid fa-house"></i> </button></a>
+    <script>
+        const btn = document.getElementById('menu-btn')
+        const nav = document.getElementById('menu')
+
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('open')
+            nav.classList.toggle('flex')
+            nav.classList.toggle('hidden')
+        })
+    </script>
 </body>
 
 </html>
