@@ -2,6 +2,7 @@
 <?php
 session_start();
 $email = $password = $confirm_password = '';
+$old_password = $new_password = '';
 $error_messenger = '';
 
 if (isset($_POST['submit'])) {
@@ -103,6 +104,50 @@ if (isset($_POST['submit'])) {
         } else {
             $error_messenger = "Invalid email or password. Please try again.";
         }
+    }elseif (isset($_POST['update-password-form']) && $_POST['update-password-form'] == 4) {
+        if (!empty($_POST['email'])) {
+            $email = filter_input(
+                INPUT_POST,
+                'email',
+                FILTER_SANITIZE_EMAIL
+            );
+        }
+        if (!empty($_POST['old-password'])) {
+            $old_password = filter_input(
+                INPUT_POST,
+                'old-password',
+                FILTER_SANITIZE_FULL_SPECIAL_CHARS
+            );
+        }
+
+        if (!empty($_POST['new-password'])) {
+            $new_password = filter_input(
+                INPUT_POST,
+                'new-password',
+                FILTER_SANITIZE_FULL_SPECIAL_CHARS
+            );
+        }
+
+
+    $query = "SELECT * FROM Users WHERE email = '$email' AND password = '$old_password'";
+    $statement = $conn->prepare($query);
+    $statement->execute();
+    $result = $statement->get_result();
+
+    $user = $result->fetch_assoc();
+
+    if (!$user) {
+        // Handle the case where email and old password do not match
+        $error_messenger =  "Invalid email or old password.";
+        exit;
+    }
+
+    // Update the user's password in the database
+    $updateQuery = "UPDATE Users SET password = '$new_password' WHERE email = '$email'";
+    $updateStatement = $conn->prepare($updateQuery);
+    $updateStatement->execute();
+    header("Location: authentication.php");
+    exit;
     }
 }
 ?>
@@ -121,6 +166,7 @@ if (isset($_POST['submit'])) {
     <script src="../js/form-validations/sign-in-validation.js" defer></script>
     <script src="../js/form-validations/log-in-validation.js" defer></script>
     <script src="../js/form-validations/log-in-admin-validation.js" defer></script>
+    <script src="../js/form-validations/update-password-form-validation.js" defer></script>
     <script>
         if (
             localStorage.getItem("color-theme") === "dark" ||
@@ -208,6 +254,9 @@ if (isset($_POST['submit'])) {
                         <label for="password" id="password-label" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password<span id="password-validation-II" class="text-lg text-red-600"> *</span></label>
                         <input type="password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$" name="password" id="password-II" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                     </div>
+                    <p class="text-sm font-light text-right text-gray-500 dark:text-gray-400">
+                       <span id="update-password-button" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Update Password</span>
+                    </p>
                     <button name="submit" class="w-full text-gray bg-gray-200 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Login</button>
                     <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                         Login As Admin <span id="login-as-admin" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Here</span>
@@ -216,7 +265,35 @@ if (isset($_POST['submit'])) {
             </div>
         </div>
     </section>
-
+    <section id="update-password-form" class="hidden w-full flex flex-col grow items-center justify-center px-6 py-6">
+        <div class="w-full  bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <div class="flex space-x-4 items-center">
+                    <i id="back-to-login-from-update-password" class="fa fa-angle-left text-gray-900  dark:text-white" style="font-size:24px"></i>
+                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                        Update Password
+                    </h1>
+                </div>
+                <form class="space-y-4 md:space-y-6" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+                    <input type="hidden" name="update-password-form" value="4">
+                    <div>
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email<span id="email-to-update-password-validation" class="text-lg text-red-600"> *</span></label>
+                        <input type="email" name="email" id="email-to-update-password-field" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg   block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white " placeholder="john@doe.com" required>
+                    </div>
+                    <div>
+                        <label for="old-password" id="old-password-label" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Old Password<span id="old-password-validation" class="text-lg text-red-600"> *</span></label>
+                        <input type="password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$" name="old-password" id="old-password-field" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                    </div>
+                    <div>
+                        <label for="new-password" id="new-password-label" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New Password<span id="new-password-validation" class="text-lg text-red-600"> *</span></label>
+                        <input type="password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$" name="new-password" id="new-password-field" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                    </div>
+          
+                    <button name="submit" class="w-full text-gray bg-gray-200 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Update</button>
+                </form>
+            </div>
+        </div>
+    </section>
     <section id="admin-login-form" class="hidden w-full flex flex-col grow items-center justify-center px-6 py-6">
         <div class="w-full  bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
