@@ -82,7 +82,23 @@ if (isset($_POST['submit'])) {
         echo "Error" . mysqli_error($conn);
     }
 }
+if (isset($_POST['cancel-reservation'])) {
+    $user_id = $_SESSION['user_id'];
 
+    // Reset hasBookedOrNot in Users table to zero
+    $resetBookingSql = "UPDATE Users SET hasBookedOrNot = 0 WHERE id = '$user_id'";
+    $resetBookingResult = mysqli_query($conn, $resetBookingSql);
+
+    // Delete the user's reservation from BookingInfo table
+    $deleteReservationSql = "DELETE FROM BookingInfo WHERE user_id = '$user_id'";
+    $deleteReservationResult = mysqli_query($conn, $deleteReservationSql);
+    if ($resetBookingResult && $deleteReservationResult) {
+        // echo "Reservation canceled successfully.";
+        //  header("Location: user_page.php");
+    } else {
+        echo "Error canceling reservation: " . mysqli_error($conn);
+    }
+}
 if (isset($_POST['log-out'])) {
     $_SESSION = array();
     session_destroy();
@@ -98,7 +114,7 @@ if (isset($_POST['log-out'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="../assets/logo.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="../assets/logo.ico" type="image/x-icon" />
     <link rel="stylesheet" href="../css/main.css">
     <script src="https://kit.fontawesome.com/eb2112263c.js" crossorigin="anonymous"></script>
     <script src="../js/form-validations/booking-form-validation.js" defer></script>
@@ -122,18 +138,37 @@ if (isset($_POST['log-out'])) {
 
 <body class="flex flex-col bg-gray-50 dark:bg-gray-900">
     <header class="flex justify-between items-center p-2 h-full">
-    <div class="flex items-center p-2 text-2xl font-semibold text-gray-900 dark:text-white">
-        <a href="home_page.php" class="flex">
-        <img src="../assets/logo.png" class="h-8  hover:animate-spin" alt="" />
-            <div class="px-2">
-                Dental <span class="text-blue-600">Smile</span>
-            </div>
-        </a>
+        <div class="flex items-center p-2 text-2xl font-semibold text-gray-900 dark:text-white">
+            <a href="home_page.php" class="flex">
+                <img src="../assets/logo.png" class="h-8  hover:animate-spin" alt="" />
+                <div class="px-2">
+                    Dental <span class="text-blue-600">Smile</span>
+                </div>
+            </a>
         </div>
-        <button id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"> <i class="fa-solid fa-user"></i> <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
-            </svg>
-        </button>
+        <div>
+            <?php
+            $canTheyCancelQuery = "SELECT Users.hasBookedOrNot, BookingInfo.approvedOrNot
+            FROM Users
+            LEFT JOIN BookingInfo ON Users.id = BookingInfo.user_id
+            WHERE Users.hasBookedOrNot = 1 AND BookingInfo.approvedOrNot = 0;
+            ";
+            $canTheyCancelResult = mysqli_query($conn, $canTheyCancelQuery);
+            if ($canTheyCancelResult) {
+                $userData = mysqli_fetch_assoc($canTheyCancelResult);
+                // Check if the user has booked and attendance is not approved
+                if ($userData && $userData['approvedOrNot'] == '0' && $userData['hasBookedOrNot'] == 1) {
+                    echo '        <form method="post" class = "inline">
+                    <button type="submit" name="cancel-reservation" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Cancel Reservation</button>
+                </form>';
+                }
+            }
+            ?>
+            <button id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"> <i class="fa-solid fa-user"></i> <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                </svg>
+            </button>
+        </div>
         <!-- Dropdown menu -->
         <div id="dropdownInformation" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
             <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
@@ -177,7 +212,9 @@ if (isset($_POST['log-out'])) {
                 </button>
             </li>
             <li class="me-2" role="presentation">
-                <button onclick="showUserHistory(<?php if(isset($_SESSION['user_id'])){echo $_SESSION['user_id'];} ?>)" class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="history-tab" type="button" role="tab" aria-controls="history-content" aria-selected="false">
+                <button onclick="showUserHistory(<?php if (isset($_SESSION['user_id'])) {
+                                                        echo $_SESSION['user_id'];
+                                                    } ?>)" class="inline-block rounded-t-lg border-b-2 border-transparent p-4 hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300" id="history-tab" type="button" role="tab" aria-controls="history-content" aria-selected="false">
                     History
                 </button>
             </li>
