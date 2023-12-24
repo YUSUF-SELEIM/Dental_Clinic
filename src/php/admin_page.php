@@ -43,6 +43,7 @@ if (isset($_SESSION['admin_email'])) {
     <script src="https://kit.fontawesome.com/eb2112263c.js" crossorigin="anonymous"></script>
     <script src="../js/approveReservation.js" defer></script>
     <script src="../js/approveAttendance.js" defer></script>
+    <script src="../js/cancelReservation.js" defer></script>
     <script src="../js/darkmode.js" defer></script>
     <script>
         if (
@@ -144,6 +145,8 @@ if (isset($_SESSION['admin_email'])) {
                         <th class='py-2 px-4 border-b'>Booking Time</th>
                         <th class='py-2 px-4 border-b'>User ID</th>
                         <th class='py-2 px-4 border-b'>Approve Reservation</th>
+                        <th class='py-2 px-4 border-b'>Cancel Reservation</th>
+
                     </tr>
                 </thead>
                 <tbody>";
@@ -156,9 +159,13 @@ if (isset($_SESSION['admin_email'])) {
                 <td class='py-2 px-4 border-b'>{$row['booking_day']}</td>
                 <td class='py-2 px-4 border-b'>{$row['booking_time']}</td>
                 <td class='py-2 px-4 border-b'>{$row['user_id']}</td>
-                <td class='py-2 px-4 border-b flex justify-center'>
+                <td class='py-2 px-4 border-b'>
                     <button class='bg-blue-500 text-white px-3 py-1 rounded' onclick='approveReservation({$row['id']})'>Approve</button>
                 </td>
+                <td class='py-2 px-4 border-b'>
+                <button class='bg-red-700 text-white px-3 py-1 rounded' onclick='cancelReservation({$row['user_id']})'>Cancel</button>
+            </td>
+
             </tr>";
                 }
 
@@ -199,6 +206,7 @@ if (isset($_SESSION['admin_email'])) {
                 <td class='py-2 px-4 border-b flex justify-center'>
                     <button class='bg-blue-500 text-white px-3 py-1 rounded' onclick='approveAttendance({$row['id']})'>Approve</button>
                 </td>
+                
             </tr>";
                 }
 
