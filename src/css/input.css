@@ -3,68 +3,71 @@
 @tailwind utilities;
 
 .main-bg-style {
-background-size: cover;  /* You can also use 'cover' based on your preference */
-background-repeat: no-repeat;
-background-position: center center; /* Center the background image */
-height: 100%; /* Ensure the background takes the full height of the container */
+    background-size: cover;
+    /* You can also use 'cover' based on your preference */
+    background-repeat: no-repeat;
+    background-position: center center;
+    /* Center the background image */
+    height: 100%;
+    /* Ensure the background takes the full height of the container */
 }
 
 /* Hamburger Menu */
 .hamburger {
-cursor: pointer;
-width: 24px;
-height: 24px;
-transition: all 0.25s;
-position: relative;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    transition: all 0.25s;
+    position: relative;
 }
 
 .hamburger-top,
 .hamburger-middle,
 .hamburger-bottom {
-position: absolute;
-top: 0;
-left: 0;
-width: 24px;
-height: 2px;
-transform: rotate(0);
-transition: all 0.5s;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 2px;
+    transform: rotate(0);
+    transition: all 0.5s;
 }
 
 .hamburger-middle {
-transform: translateY(7px);
+    transform: translateY(7px);
 }
 
 .hamburger-bottom {
-transform: translateY(14px);
+    transform: translateY(14px);
 }
 
 .open {
-transform: rotate(90deg);
-transform: translateY(0px);
+    transform: rotate(90deg);
+    transform: translateY(0px);
 }
 
 .open .hamburger-top {
-transform: rotate(45deg) translateY(6px) translate(6px);
+    transform: rotate(45deg) translateY(6px) translate(6px);
 }
 
 .open .hamburger-middle {
-display: none;
+    display: none;
 }
 
 .open .hamburger-bottom {
-transform: rotate(-45deg) translateY(6px) translate(-6px);
+    transform: rotate(-45deg) translateY(6px) translate(-6px);
 }
 
 
 ::-webkit-scrollbar {
-width: 10px;
+    width: 10px;
 }
 
 
 ::-webkit-scrollbar-track {
-background: #f1f1f1; 
+    background: #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb {
-background: #0055ff; 
+    background: #0055ff;
 }
