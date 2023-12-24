@@ -13,7 +13,7 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="../assets/logo.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="../assets/logo.ico" type="image/x-icon" />
     <script src="https://kit.fontawesome.com/eb2112263c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../css/main.css">
     <script src="../js/darkmode.js" defer></script>
@@ -210,24 +210,24 @@ if (isset($_POST['submit'])) {
             </div>
             <div class="flex gap-3 grid-cols-1 sm:grid-cols-2">
                 <div>
-                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white"><img src="../assets/phone-call.png " class="h-5 w-5"></h2>
-                    <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                    <ul class="dark:text-white font-medium">
                         <li class="mb-4">
-                            <a href="#" class="hover:underline"><img src="../assets/email.png" class="h-5 w-5"></a>
+                            <div class="flex space-x-2 items-center">
+                                <i class="fa-solid fa-phone"></i>
+                                <div class="text-base text-black dark:text-white">+0334544544</div>
+                            </div>
+                        </li>
+                        <li class="mb-4">
+                            <div class="flex space-x-2 items-center">
+                                <i class="fa-solid fa-envelope"></i>
+                                <div class="text-base text-black dark:text-white">Dental_Smile.info</div>
+                            </div>
                         </li>
                         <li>
-                            <a href="#" class="hover:underline"><img src="../assets/location.png" class="h-5 w-5"></a>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">+0334544544</h2>
-                    <ul class="text-gray-500 dark:text-gray-400 font-medium">
-                        <li class="mb-4">
-                            <a href="https://github.com/themesberg/flowbite" class="hover:underline ">dentalsmile.info</a>
-                        </li>
-                        <li>
-                            <a href="https://discord.gg/4eeurUVvTy" class="hover:underline">Alex,Bee</a>
+                            <div class="flex space-x-2 items-center">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <div class="text-base text-black dark:text-white">Alexandria</div>
+                            </div>
                         </li>
                     </ul>
                 </div>
