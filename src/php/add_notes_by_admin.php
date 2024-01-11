@@ -2,7 +2,7 @@
 include '../config/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Assuming you have proper validation and sanitization in your production code
+    
     $user_id = $_POST['user_id'];
     $history = $_POST['history'];
 

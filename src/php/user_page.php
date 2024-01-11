@@ -157,7 +157,7 @@ if (isset($_POST['log-out'])) {
             if ($canTheyCancelResult) {
                 $userData = mysqli_fetch_assoc($canTheyCancelResult);
                 // Check if the user has booked and attendance is not approved
-                if ($userData && $userData['approvedOrNot'] == '0' && $userData['hasBookedOrNot'] == 1) {
+                if ($userData && $userData['approvedOrNot'] == 0 && $userData['hasBookedOrNot'] == 1) {
                     echo '        <form method="post" class = "inline">
                     <button type="submit" name="cancel-reservation" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Cancel Reservation</button>
                 </form>';
